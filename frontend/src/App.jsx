@@ -1,12 +1,9 @@
-
-
-import { Outlet } from 'react-router-dom'
-import Navbar from "./layout/NavBar/index"
+import { Outlet } from 'react-router-dom';
+import Navbar from './layout/NavBar/index.jsx'
 import './App.css'
-import Footer from './layout/Footer';
+import Footer from './layout/Footer/index.jsx'
 
 function App() {
- 
 
   return (
     <div>
@@ -17,6 +14,6 @@ function App() {
       <Footer/>
     </div>
   );
-}
+};
 
 export default App
