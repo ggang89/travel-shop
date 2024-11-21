@@ -6,7 +6,8 @@ import LandingPage from "./pages/LandingPage/index.jsx";
 import LoginPage from "./pages/Loginpage/index.jsx";
 import RegisterPage from "./pages/RegisterPage/index.jsx";
 import { Provider } from "react-redux";
-import { store } from "./store/index.js";
+import { persistor, store } from "./store/index.js";
+import { PersistGate } from "redux-persist/integration/react";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
   </Provider>
 );
