@@ -38,13 +38,24 @@ mongoose
 
 
 //  "/"이 경로로 요청이 오면 Hellow World 결과값으로 전달
+// app.get('/', (req, res) => {
+//   res.send('Hello World');
+// })
+
+//express로 에러 처리하기 => 에러처리기 등록
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  throw new Error('it is an error');
+
 })
 
 app.post('/', (req, res) => {
   console.log(req.body);
   res.json(req.body);
+})
+
+//에러 처리기
+app.use((error, req, res, next) => {
+  res.send(error.message);
 })
 
 //express.static(경로,파일이 있는 폴더)=>이미지, css, js파일 같은 정적 파일을 제공
