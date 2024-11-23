@@ -43,8 +43,8 @@ mongoose
 // })
 
 //express로 에러 처리하기 => 에러처리기 등록
-app.get('/', (req, res) => {
-  throw new Error('it is an error');
+app.get('/', (req, res,next) => {
+setImmediate(() => {next( new Error("it is an error"))});
 
 })
 
@@ -55,7 +55,11 @@ app.post('/', (req, res) => {
 
 //에러 처리기
 app.use((error, req, res, next) => {
-  res.send(error.message);
+  //express에서 제공하는 status에러 코드가 있으면 그걸 클라이언트에게 전해주고 없으면 500
+  res.status(err.status || 500);
+
+  //error메시지 있으면 보내고 없으면 내가 작성한 메시지 보내기
+  res.send(error.message || '서버에서 에러가 났습니다');
 })
 
 //express.static(경로,파일이 있는 폴더)=>이미지, css, js파일 같은 정적 파일을 제공
