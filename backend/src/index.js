@@ -62,6 +62,8 @@ app.use((error, req, res, next) => {
   res.send(error.message || '서버에서 에러가 났습니다');
 })
 
+app.use('/users', require('./routes/users'));
+
 //express.static(경로,파일이 있는 폴더)=>이미지, css, js파일 같은 정적 파일을 제공
 //상대경로 사용 => app.use(express.static('/home', 'uploads'));
 //절대경로 사용
