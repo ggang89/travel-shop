@@ -32,7 +32,7 @@ userSchema.pre('save', async function (next) {
   //만약 패스워드를 수정하면
   if (user.isModified('password')) {
     //salt와 hash로 암호화함
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10); 
     const hash = await bcrypt.hash(user.password, salt);
 
     //hash된 password로 넣어줌
