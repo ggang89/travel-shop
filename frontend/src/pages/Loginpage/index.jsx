@@ -18,16 +18,14 @@ const LoginPage = () => {
       password,
     };
 
-    //thunk함수를 만들어서 보내줌
     dispatch(loginUser(body));
-
     reset();
   };
 
   const userEmail = {
     required: "필수 필드입니다.",
   };
- 
+
   const userPassword = {
     required: "필수 필드입니다.",
     minLength: {
@@ -39,7 +37,7 @@ const LoginPage = () => {
   return (
     <section className="flex flex-col justify-center mt-20 max-w-[400px] m-auto">
       <div className="p-6 bg-white rounded-md shadow-md">
-        <h1 className="text-3xl font-semibold text-center">회원가입</h1>
+        <h1 className="text-3xl font-semibold text-center">로그인</h1>
         <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-2">
             <label
@@ -84,18 +82,15 @@ const LoginPage = () => {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 duration-200"
+              className="w-full px-4 py-2 text-white duration-200 bg-black rounded-md hover:bg-gray-700"
             >
               로그인
             </button>
           </div>
 
-          <p className="mt-8 text-xs font-light text-center text-gray-500">
+          <p className="mt-8 text-xs font-light text-center text-gray-700">
             아이디가 없다면?{" "}
-            <a
-              href="/register"
-              className="font-medium hover:underline text-gray-800"
-            >
+            <a href="/register" className="font-medium hover:underline">
               회원가입
             </a>
           </p>
