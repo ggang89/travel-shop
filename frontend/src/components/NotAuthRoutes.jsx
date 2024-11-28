@@ -1,12 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import PropTypes from "prop-types";
 
-const NotAuthRoutes = ({ isAuth }) => {
+import { useSelector } from "react-redux";
+
+const NotAuthRoutes = () => {
+  const isAuth = useSelector((state) => state.user?.isAuth);
   return isAuth ? <Navigate to={"/"} /> : <Outlet />;
 };
 
 export default NotAuthRoutes;
-
-NotAuthRoutes.propTypes = {
-  isAuth: PropTypes.bool.isRequired,
-};

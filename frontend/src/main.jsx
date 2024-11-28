@@ -8,10 +8,9 @@ import RegisterPage from "./pages/RegisterPage/index.jsx";
 import { Provider } from "react-redux";
 import { persistor, store } from "./store/index.js";
 import { PersistGate } from "redux-persist/integration/react";
-import ProtectedPage from "./pages/ProtectedPage/index.js";
+import ProtectedPage from "./pages/ProtectedPage/index.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 import NotAuthRoutes from "./components/NotAuthRoutes.jsx";
-
 
 const router = createBrowserRouter([
   {
@@ -26,17 +25,17 @@ const router = createBrowserRouter([
       // 로그인한 사람만 볼 수 있는 경로
       {
         element: <ProtectedRoutes />,
-        isAuth: { isAuth },
-        children: {
-          path: "/protected",
-          element: <ProtectedPage />,
-        },
+        children: [
+          {
+            path: "/protected",
+            element: <ProtectedPage />,
+          },
+        ],
       },
 
       // 로그인 안 한 사람이 볼 수 있는 경로
       {
         element: <NotAuthRoutes />,
-        isAuth: { isAuth },
         children: [
           {
             path: "/login",
@@ -53,7 +52,7 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={store} >
+  <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <RouterProvider router={router} />
     </PersistGate>
