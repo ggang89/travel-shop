@@ -1,9 +1,12 @@
+import { Navigate, Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
 
+const NotAuthRoutes = ({ isAuth }) => {
+  return isAuth ? <Navigate to={"/"} /> : <Outlet />;
+};
 
-const NotAuthRoutes = () => {
-  return (
-    <div>NotAuthRoutes</div>
-  )
-}
+export default NotAuthRoutes;
 
-export default NotAuthRoutes
+NotAuthRoutes.propTypes = {
+  isAuth: PropTypes.bool.isRequired,
+};
