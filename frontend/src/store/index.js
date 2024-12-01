@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage";//로컬스토리지에 저장할때
 
 //서로 다른 리듀싱 함수들을 값으로가지는 객체를 받아서
 // createStore에 넘길 수 있는 하나의 리듀싱 함수로 변환
@@ -33,8 +33,12 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware(
       //{ serializableCheck: false })
+      //미들웨어가 serialized한 값인지 체크하고 불가능한 값이면 경고를 보여준다
+      // redux-persist를 이용하면 action이 dispatch될때 unserialized한 값이 들어가므로
+      //오류가 보이지 않도록 false로 지정해줘야함
       {
         serializableCheck: {
+          //아래 값들이 오면 serialized 체크를 무시하는 값을 지정하면 오류가 안뜸
           ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
       }
