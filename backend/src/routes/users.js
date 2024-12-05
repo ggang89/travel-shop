@@ -36,24 +36,30 @@ router.post("/login", async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      //user가 없으면 상태를 끊어줌
+      //user가 없으면 400에러를 보내주고 상태를 끊어줌
       return res.status(400).send("Auth failed, email not found");
     }
 
     // 비밀번호가 유효한지 확인
+    // model/User.js의 userSchema.methods.comparePassword에서 확인
     const isMatch = await user.comparePassword(req.body.password);
     if (!isMatch) {
       return res.status(400).send("Wrong password");
     }
 
+    // 토큰 생성
     const payload = {
       userId: user._id.toHexString(),
+      // .toHexString() => 오브젝트로 되어있는 몽고디비 id를 String으로 바꿔줌
     };
-    // 토큰 생성
+
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1h",
+      // process.env.환경변수 => .env에 들어있는 환경변수 값에 접근
+      expiresIn: "1h", //토큰 유효시간 1시간
     });
-    return res.json({ user, accessToken, a: "b" }); //클라이언트한테 보내줌 user.data에 넣어주느 payload임
+    //클라이언트에 응답으로 해당 user에 대한 data와 생성한 토큰을 보내줌
+    return res.json({ user, accessToken});
+
   } catch (error) {
     next(error);
   }
