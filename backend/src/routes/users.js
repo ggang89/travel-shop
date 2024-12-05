@@ -17,10 +17,15 @@ router.get("/auth", auth, (req, res) => {
 router.post("/register", async (req, res, next) => {
   //유저 데이터 저장
   try {
+    // 몽구스 스키마로 만든 User모델에
+    // req.body에 있는 유저정보로 user객체 만들고
     const user = new User(req.body);
+    // 저장=> 몽고디비에 저장됨
     await user.save();
+    // 성공시 성공 status200 전달
     return res.sendStatus(200);
   } catch (error) {
+    //실패하면 error 전달(에러처리기로 보내주기)
     next(error);
   }
 });
