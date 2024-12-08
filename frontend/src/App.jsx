@@ -12,7 +12,14 @@ import { authUser } from "./store/thunkFunctions";
 
 function App() {
   const dispatch = useDispatch();
-  const isAuth = useSelector(state =>  state.user?.isAuth);
+  const isAuth = useSelector(state => {
+     console.log("state", state);
+     console.log("state.user", state.user);
+    
+    return state.user?.isAuth;
+   
+    
+  });
   console.log(isAuth);
   
   const { pathname } = useLocation();

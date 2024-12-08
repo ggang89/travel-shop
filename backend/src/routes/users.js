@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
+// 여기서 두번째 인자 auth는 미들웨어임
 router.get("/auth", auth, (req, res) => {
   return res.status(200).json({
     _id: req.user._id,

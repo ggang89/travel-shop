@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+
+// auth 미들웨어
 let auth = async (req, res, next) => {
   //토큰을 request headers에서 가져오기
   const authHeader = req.headers['authorization'];
