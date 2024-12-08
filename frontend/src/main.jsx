@@ -11,6 +11,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import ProtectedPage from "./pages/ProtectedPage/index.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 import NotAuthRoutes from "./components/NotAuthRoutes.jsx";
+import DetailProductPage from "./pages/DetailProductPage/index.jsx";
+import UploadProductPage from "./pages/UploadProductPage/index.jsx";
+import CartPage from "./pages/CartPage/index.jsx";
+import HistoryPage from "./pages/HistoryPage/index.jsx"
 
 const router = createBrowserRouter([
   {
@@ -29,6 +33,22 @@ const router = createBrowserRouter([
           {
             path: "/protected",
             element: <ProtectedPage />,
+          },
+          {
+            path: "/product/upload",
+            element: <UploadProductPage />,
+          },
+          {
+            path: "/product/:prodectId",
+            element: <DetailProductPage />,
+          },
+          {
+            path: "/user/cart",
+            element: <CartPage />,
+          },
+          {
+            path: "/history",
+            element: <HistoryPage />,
           },
         ],
       },

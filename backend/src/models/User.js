@@ -22,6 +22,14 @@ const userSchema = mongoose.Schema({
   },
   image: {
     String
+  },
+  cart: {
+    type: Array,
+    default:[]
+  },
+  history: {
+    type: Array,
+    default:[]
   }
 });
 
