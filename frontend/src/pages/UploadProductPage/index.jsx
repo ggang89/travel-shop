@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import FileUpload from "../../components/FileUpload";
 
 const continents = [
   { key: 1, value: "Africa" },
@@ -33,6 +34,13 @@ const UploadProductPage = () => {
     }));
   };
 
+  const handleImages = (newImages) => {
+    setProduct((prevState) => ({
+      ...prevState,
+      images: newImages,
+    }));
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // 백엔드에 요청보내고 백엔드에서 데이터베이스에 저장
@@ -58,6 +66,9 @@ const UploadProductPage = () => {
       </div>
 
       <form className="mt-6" onSubmit={handleSubmit}>
+
+        <FileUpload images={product.images} onImageChange={handleImages} />
+
         <div className="mt-4">
           <label htmlFor="title">이름</label>
           <input
