@@ -3,23 +3,33 @@ import PropTypes from "prop-types";
 import axiosInstance from "../utils/axios";
 
 const FileUpload = ({ images, onImageChange }) => {
-  
   const handleDrop = async (files) => {
     let formData = new FormData();
 
     const config = {
-      header:{'content-type':'multipart/form-data'}
-    }
-    formData.append('file', files[0]);
+      header: { "content-type": "multipart/form-data" },
+    };
+    formData.append("file", files[0]);
 
     try {
-      const response=await axiosInstance.post('/products/image', formData, config);
-      onImageChange([...images,response.data.fileName])
+      const response = await axiosInstance.post(
+        "/products/image",
+        formData,
+        config
+      );
+      onImageChange([...images, response.data.fileName]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  
+  };
+
+  const handleDelete = (image) => {
+    const currentIndex = images.indexOf(image);
+    let newImages = [...images];
+    newImages.splice(currentIndex, 1);
+    onImageChange(newImages);
+  };
+
   return (
     <div className="flex gap-4">
       <Dropzone onDrop={handleDrop}>
@@ -27,16 +37,17 @@ const FileUpload = ({ images, onImageChange }) => {
           <section className="min-w-[300px] h-[300px] border flex items-center justify-center ">
             <div {...getRootProps()}>
               <input {...getInputProps()} />
-              <p className="text-3xl">➕</p>
+              <p className="text-3xl cursor-pointer">➕</p>
             </div>
           </section>
         )}
       </Dropzone>
+
       <div className="flex-grow h-[300px] border flex items-center justify-center overflow-x-scroll overflow-y-hidden">
         {images.map((image) => {
-          <div key={image}>
+          <div key={image} onClick={() => handleDelete(image)}>
             <img
-              className="min-2-[300px] h-[300px]"
+              className="min-w-[300px] h-[300px]"
               src={`${import.meta.env.VITE_SERVER_URL}/${image}`}
               alt={image}
             />
@@ -51,5 +62,5 @@ export default FileUpload;
 
 FileUpload.propTypes = {
   images: PropTypes.string,
-  onImageChange:PropTypes.string,
+  onImageChange: PropTypes.func,
 };
