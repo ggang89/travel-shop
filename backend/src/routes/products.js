@@ -25,6 +25,18 @@ router.post("/image", auth, async (req, res, next) => {
   });
 });
 
+// 아무나 가져올 수 있도록 auth 미들웨어 삭제
+router.get('/', async (req, res, nest) => {
+  try {
+    const products = await Product.find.populate('writer');
+    return res.status(200).json({
+      products
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post("/", auth, async (req, res, next) => {
   try {
     const product = new Product(req.body);
