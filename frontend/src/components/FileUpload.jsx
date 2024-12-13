@@ -7,6 +7,8 @@ const FileUpload = ({ images, onImageChange }) => {
     let formData = new FormData();
 
     const config = {
+      // encype(제출된 폼 데이터의 인코딩 방법)의 속성값 중 하나로
+      // <input type="file"> 경우 아래의 type 사용
       header: { "content-type": "multipart/form-data" }
     }
 
@@ -18,6 +20,8 @@ const FileUpload = ({ images, onImageChange }) => {
         formData,
         config
       );
+      // 기존에 있던 이미지 + 추가한 이미지의 이름을 넣은 새 배열을
+      // product.images의 새 베열로 넣어줌
       onImageChange([...images, response.data.fileName]);
     } catch (error) {
       console.log(error);

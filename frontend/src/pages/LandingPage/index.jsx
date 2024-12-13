@@ -22,7 +22,7 @@ const LandingPage = () => {
   const fetchProducts = async ({ skip, limit, loadMore = false, filters = {}, searchTerm = "" }) => {
     const params = {
       skip,
-      lemit,
+      limit,
       filters,
       searchTerm
     }
