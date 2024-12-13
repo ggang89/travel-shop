@@ -6,6 +6,7 @@ import SearchInput from "./Sections/SearchInput";
 import axiosInstance from "../../utils/axios";
 
 const LandingPage = () => {
+  // skip. limit은 몽고디비에서 제공해주는 메소드
   const limit = 4;
   const [products, setProducts] = useState([]);
   const [skip, setSkip] = useState(0);
@@ -28,11 +29,30 @@ const LandingPage = () => {
     }
     try {
       const response = await axiosInstance.get('/products', { params })
-      setProducts(response.data.products);
-
+      console.log("params",params)
+      if (loadMore) {
+        setProducts([...products, ...response.data.products])
+        console.log("product", products);
+      } else {
+        setProducts(response.data.product);
+        console.log("product", products);
+     }
+      setHasMore(response.data.hasMore);
+      
     } catch (error) {
       console.error(error);
     }
+  }
+
+  const handleLoadMore = () => {
+    const body = {
+      skip: skip + limit,
+      limit,
+      loadMore: true,
+      filters
+    }
+    fetchProducts(body);
+    setSkip(skip+limit)
   }
 
   return (
@@ -67,7 +87,7 @@ const LandingPage = () => {
 
       {hasMore && 
         <div className="flex justify-center mt-5">
-          <button className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500">
+          <button onClick={handleLoadMore } className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500">
             더보기
           </button>
         </div>
