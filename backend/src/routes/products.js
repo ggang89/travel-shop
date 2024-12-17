@@ -32,6 +32,27 @@ router.get("/", async (req, res, nest) => {
   const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   const limit = req.query.limit ? Number(req.query.limit) : 20;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
+
+  let findArgs = {};
+  for (let key in req.query.filters) {
+    if (req.query.filters[key].length > 0) {
+      if (key === 'price') {
+        findArgs[key] = {
+          // Greater than equal
+          $gte:req.query.filters[key][0],
+          // Less than equal
+          $lte:req.query.filters[key][1]
+        };
+       
+      } else {
+         findArgs[key] = req.query.filters[key];
+
+      }
+     
+    }
+  }
+
+
   try {
     const products = await Product.find()
       .populate("writer") // populate => 해당 유저의 모든 데이터를 가져옴
@@ -42,7 +63,7 @@ router.get("/", async (req, res, nest) => {
     const productsTotal = await Product.countDocuments();
     // skip+limit이 전체 갯수보다 작으면 hasMore이 true라서 더보기 버튼이 보임
     const hasMore = skip + limit < productsTotal ? true : false;
-
+    console.log(products);
     return res.status(200).json({
       products,
       hasMore,

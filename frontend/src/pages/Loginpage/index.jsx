@@ -33,7 +33,7 @@ const LoginPage = () => {
       message: "최소 6자입니다.",
     },
   };
-
+  console.log("register",register("pass2"));
   return (
     <section className="flex flex-col justify-center mt-20 max-w-[400px] m-auto">
       <div className="p-6 bg-white rounded-md shadow-md">

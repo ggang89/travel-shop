@@ -4,6 +4,7 @@ import CheckBox from "./Sections/CheckBox";
 import RadioBox from "./Sections/RadioBox";
 import SearchInput from "./Sections/SearchInput";
 import axiosInstance from "../../utils/axios";
+import { continents, prices } from "../../utils/filterData";
 
 const LandingPage = () => {
   // skip. limit은 몽고디비에서 제공해주는 메소드
@@ -17,43 +18,81 @@ const LandingPage = () => {
   });
 
   useEffect(() => {
-    fetchProducts({skip,limit})
-  },[])
+    fetchProducts({ skip, limit });
+  }, []);
 
-  const fetchProducts = async ({ skip, limit, loadMore = false, filters = {}, searchTerm = "" }) => {
+  const fetchProducts = async ({
+    skip,
+    limit,
+    loadMore = false,
+    filters = {},
+    searchTerm = "",
+  }) => {
     const params = {
       skip,
       limit,
       filters,
-      searchTerm
-    }
+      searchTerm,
+    };
     try {
-      const response = await axiosInstance.get('/products', { params })
-      console.log("params",params)
+      const response = await axiosInstance.get("/products", { params });
+      console.log("params", params);
       if (loadMore) {
-        setProducts([...products, ...response.data.products])
+        setProducts([...products, ...response.data.products]);
         console.log("product", products);
       } else {
         setProducts(response.data.product);
         console.log("product", products);
-     }
+      }
       setHasMore(response.data.hasMore);
-      
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const handleLoadMore = () => {
     const body = {
       skip: skip + limit,
       limit,
       loadMore: true,
-      filters
-    }
+      filters,
+    };
     fetchProducts(body);
-    setSkip(skip+limit)
+    setSkip(skip + limit);
+  };
+
+  const handleFilters = (newFilteredData, category) => {
+    const newFilters = { ...filters };
+    newFilters[category] = newFilteredData;
+    if (category === 'price') {
+      const priceValues = handlePrice(newFilteredData);
+      newFilters[category]=priceValues
+    }
+    showFilteredResults(newFilters);
+    setFilters(newFilters);
+  };
+
+  const handlePrice = (value) => {
+    let array = [];
+    for (let key in prices) {
+      if (prices[key]._id === parseInt(value, 10)) {
+        array=prices[key].array
+      }
+    }
+    return array;
   }
+
+  const showFilteredResults = (filters) => {
+    const body = {
+      skip: 0,
+      limit: limit,
+      filters: filters,
+    };
+    fetchProducts(body);
+    setSkip(0);
+  };
+
+  console.log("product", products);
 
   return (
     <section>
@@ -64,10 +103,15 @@ const LandingPage = () => {
       {/* filter */}
       <div className="flex gap-3">
         <div className="w-1/2">
-          <CheckBox />
+          <CheckBox
+            continents={continents}
+            checkedContinents={filters.continents}
+            onFilters={(filters) => handleFilters(filters, "continents")}
+          />
         </div>
         <div className="w-1/2">
-          <RadioBox />
+          <RadioBox prices={prices} checkedPrice={filters.price}
+            onFilters={filters => handleFilters(filters, 'price')} />
         </div>
       </div>
 
@@ -78,20 +122,23 @@ const LandingPage = () => {
 
       {/* card */}
       <div className="grid gird-cols-2 sm:grid-cols-4 gap-4">
-        {products.map((product) => (
+        {products?.map((product) => (
           <CardItem product={product} key={product._id} />
         ))}
       </div>
 
       {/* loadMore */}
 
-      {hasMore && 
+      {hasMore && (
         <div className="flex justify-center mt-5">
-          <button onClick={handleLoadMore } className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500">
+          <button
+            onClick={handleLoadMore}
+            className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
+          >
             더보기
           </button>
         </div>
-      }
+      )}
     </section>
   );
 };

@@ -37,7 +37,7 @@ router.post("/login", async (req, res, next) => {
   try {
     //존재하는 유저인지 확인
     const user = await User.findOne({ email: req.body.email });
-
+  
     if (!user) {
       //user가 없으면 400에러를 보내주고 상태를 끊어줌
       return res.status(400).send("Auth failed, email not found");
