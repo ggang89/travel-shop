@@ -40,10 +40,11 @@ const LandingPage = () => {
       console.log("params", params);
       if (loadMore) {
         setProducts([...products, ...response.data.products]);
-        console.log("product", products);
+        //console.log("product", products);
       } else {
-        setProducts(response.data.product);
-        console.log("product", products);
+        setProducts(response.data.products);
+        console.log("response",response)
+        //console.log("product", products);
       }
       setHasMore(response.data.hasMore);
     } catch (error) {
@@ -89,7 +90,7 @@ const LandingPage = () => {
       skip: 0,
       limit: limit,
       filters: filters,
-      searchTerm:searchTerm
+      searchTerm: searchTerm
     };
     fetchProducts(body);
     setSkip(0);

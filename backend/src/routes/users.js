@@ -13,7 +13,7 @@ router.get("/auth", auth, (req, res) => {
     role: req.user.role,
     image: req.user.image,
     cart: req.user.cart,
-    history:req.user.history
+    history: req.user.history,
   });
 });
 
@@ -37,7 +37,7 @@ router.post("/login", async (req, res, next) => {
   try {
     //존재하는 유저인지 확인
     const user = await User.findOne({ email: req.body.email });
-  
+
     if (!user) {
       //user가 없으면 400에러를 보내주고 상태를 끊어줌
       return res.status(400).send("Auth failed, email not found");
@@ -61,20 +61,19 @@ router.post("/login", async (req, res, next) => {
       expiresIn: "1h", //토큰 유효시간 1시간
     });
     //클라이언트에 응답으로 해당 user에 대한 data와 생성한 토큰을 보내줌
-    return res.json({ user, accessToken});
-
+    return res.json({ user, accessToken });
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/logout', auth, async(req, res, next) => {
+router.post("/logout", auth, async (req, res, next) => {
   try {
     return res.sendStatus(200);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 router.post("/cart", auth, async (req, res, next) => {
   try {
@@ -87,15 +86,16 @@ router.post("/cart", auth, async (req, res, next) => {
       if (item.id === req.body.productId) {
         duplicate = true;
       }
-    })
+    });
 
     // 상품이 이미 있을 때
     if (duplicate) {
       const user = await User.findOneAndUpdate(
-        { _id: req.user._id, "cart.id": req.body.productId },
-        { $inc: { "cart.$.quantity": 1 } },
-        {new:true}
-      )
+        { _id: req.user._id, "cart.id": req.body.productId }, // 찾고
+        { $inc: { "cart.$.quantity": 1 } },                  // 업데이트
+        { new: true }                                       // 옵션
+      );
+      console.log("??", _id, cart);
       return res.status(201).send(user.cart);
     }
     // 상품이 있지 않을 떄
@@ -107,18 +107,17 @@ router.post("/cart", auth, async (req, res, next) => {
             cart: {
               id: req.body.productId,
               quantity: 1,
-              date:Date.now()
-            }
-          }
+              date: Date.now(),
+            },
+          },
         },
-        {new:true}
-      )
+        { new: true }
+      );
       return res.status(201).send(user.cart);
     }
   } catch (error) {
     next(error);
   }
 });
-
 
 module.exports = router;

@@ -18,7 +18,7 @@ const ProductImage = ({ product }) => {
       
     }
   },[product])
-  return <ImageGallery item={images} />;
+  return <ImageGallery items={images} />;
 }
 
 export default ProductImage

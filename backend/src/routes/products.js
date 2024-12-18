@@ -25,9 +25,9 @@ router.post("/image", auth, async (req, res, next) => {
   });
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id',auth, async (req, res, next) => {
   const type = req.query.type;
-  let productIds = req.params.id;
+  let productIds = req.params.id; // 위의 /:id와 맞춤
 
   // productId를 이용해서 DB에서 productId와 같은 상품의 정보를 가져온다.
   try {

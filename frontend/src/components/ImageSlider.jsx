@@ -7,7 +7,7 @@ const ImageSlider = ({ images }) => {
       {images.map((image) => (
         <div key={image}>
           <img
-            src={`${import.meta.env.Vite_SERVER_URL}/${image}`}
+            src={`${import.meta.env.VITE_SERVER_URL}/${image}`}
             alt={image}
             className="w-full max-h-[150px]"
           />
