@@ -48,19 +48,18 @@ router.get("/", async (req, res, nest) => {
          findArgs[key] = req.query.filters[key];
 
       }
-     
     }
   }
-
+console.log(findArgs)
 
   try {
-    const products = await Product.find()
+    const products = await Product.find(findArgs)
       .populate("writer") // populate => 해당 유저의 모든 데이터를 가져옴
       .sort([[sortBy, order]])
       .skip(skip)
       .limit(limit);
 
-    const productsTotal = await Product.countDocuments();
+    const productsTotal = await Product.countDocuments(findArgs);
     // skip+limit이 전체 갯수보다 작으면 hasMore이 true라서 더보기 버튼이 보임
     const hasMore = skip + limit < productsTotal ? true : false;
     console.log(products);

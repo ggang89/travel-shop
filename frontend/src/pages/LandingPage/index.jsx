@@ -64,9 +64,9 @@ const LandingPage = () => {
   const handleFilters = (newFilteredData, category) => {
     const newFilters = { ...filters };
     newFilters[category] = newFilteredData;
-    if (category === 'price') {
+    if (category === "price") {
       const priceValues = handlePrice(newFilteredData);
-      newFilters[category]=priceValues
+      newFilters[category] = priceValues;
     }
     showFilteredResults(newFilters);
     setFilters(newFilters);
@@ -76,11 +76,11 @@ const LandingPage = () => {
     let array = [];
     for (let key in prices) {
       if (prices[key]._id === parseInt(value, 10)) {
-        array=prices[key].array
+        array = prices[key].array;
       }
     }
     return array;
-  }
+  };
 
   const showFilteredResults = (filters) => {
     const body = {
@@ -110,8 +110,11 @@ const LandingPage = () => {
           />
         </div>
         <div className="w-1/2">
-          <RadioBox prices={prices} checkedPrice={filters.price}
-            onFilters={filters => handleFilters(filters, 'price')} />
+          <RadioBox
+            prices={prices}
+            checkedPrice={filters.price}
+            onFilters={(filters) => handleFilters(filters, "price")}
+          />
         </div>
       </div>
 

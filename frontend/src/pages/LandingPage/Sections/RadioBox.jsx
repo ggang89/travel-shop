@@ -10,7 +10,7 @@ const RadioBox = ({prices,checkedPrice,onFilters}) => {
             onChange={e => onFilters(e.target.value)}
             type="radio"
             id={price._id}
-            value={price.id}
+            value={price._id}
           />
           {" "}
           <label htmlFor={price._id}>{price.name}</label>
