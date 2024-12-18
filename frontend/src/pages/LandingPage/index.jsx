@@ -9,6 +9,7 @@ import { continents, prices } from "../../utils/filterData";
 const LandingPage = () => {
   // skip. limit은 몽고디비에서 제공해주는 메소드
   const limit = 4;
+  const [searchTerm, setSearchTerm] = useState('');
   const [products, setProducts] = useState([]);
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -56,6 +57,7 @@ const LandingPage = () => {
       limit,
       loadMore: true,
       filters,
+      searchTerm:searchTerm
     };
     fetchProducts(body);
     setSkip(skip + limit);
@@ -87,12 +89,25 @@ const LandingPage = () => {
       skip: 0,
       limit: limit,
       filters: filters,
+      searchTerm:searchTerm
     };
     fetchProducts(body);
     setSkip(0);
   };
 
   console.log("product", products);
+
+  const handleSearchTerm = (event) => {
+    const body = {
+      skip: 0,
+      limit: limit,
+      filters: filters,
+      searchTerm:event.target.value
+    }
+    setSkip(0);
+    setSearchTerm(event.target.value);
+    fetchProducts(body);
+  }
 
   return (
     <section>
@@ -119,8 +134,8 @@ const LandingPage = () => {
       </div>
 
       {/* search */}
-      <div className="flex justify-end ">
-        <SearchInput />
+      <div className="flex justify-end mb-3">
+        <SearchInput searchTerm={searchTerm} onSearch={handleSearchTerm} />
       </div>
 
       {/* card */}

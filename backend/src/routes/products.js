@@ -32,6 +32,7 @@ router.get("/", async (req, res, nest) => {
   const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   const limit = req.query.limit ? Number(req.query.limit) : 20;
   const skip = req.query.skip ? Number(req.query.skip) : 0;
+  const term = req.query.searchTerm;
 
   let findArgs = {};
   for (let key in req.query.filters) {
@@ -49,6 +50,10 @@ router.get("/", async (req, res, nest) => {
 
       }
     }
+  }
+
+  if (term) {
+    findArgs['$text'] = { $search: term };
   }
 console.log(findArgs)
 
