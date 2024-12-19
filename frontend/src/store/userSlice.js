@@ -5,6 +5,7 @@ import {
   authUser,
   logoutUser,
   addToCart,
+  getCartItems,
 } from "./thunkFunctions";
 import { toast } from "react-toastify";
 
@@ -98,7 +99,22 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         toast.error(action.payload);
+      })
+
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartDetail = action.payload;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        toast.error(action.payload);
       });
+    
+    
   },
 });
 
